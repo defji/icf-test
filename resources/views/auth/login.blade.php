@@ -38,14 +38,14 @@
                                 @enderror
                             </div>
                         </div>
-{{--                        @if(session()->has('captcha'))--}}
+                        @if(session()->has('captcha'))
                         <div class="form-group row">
                             <div class="col-md-2 offset-4">
                             {!!  captcha_img() !!}
-                            <input type="text" name="captcha" class="form-control @error('captcha') is-invalid @enderror">
+                            <input type="text" name="captcha" class="form-control @error('captcha') is-invalid @enderror" value="">
                             </div>
                         </div>
-{{--                        @endif--}}
+                        @endif
 
 {{--                        <div class="form-group row">--}}
 {{--                            <div class="col-md-6 offset-md-4">--}}

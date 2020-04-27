@@ -69,7 +69,7 @@ class LoginController extends Controller
             $request->validate([
                 $this->username() => 'required|string',
                 'password' => 'required|string',
-                'captcha' => 'captcha|required'
+                'captcha' => $request->captcha ? 'captcha|required|min:4|max:4' : ''
             ]);
     }
 
