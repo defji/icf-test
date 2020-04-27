@@ -41,14 +41,37 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Bejelentkezés') }}</a>
                             </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
+{{--                            @if (Route::has('register'))--}}
+{{--                                <li class="nav-item">--}}
+{{--                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>--}}
+{{--                                </li>--}}
+{{--                            @endif--}}
                         @else
+
+                        @role(\App\Constants\Roles::ROLE_ADMINISTRATOR)
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin-page">Adminsztrátorok oldala</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/editor-page">Tartalomszerkesztők oldala</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user-page">Regisztrált felhasználók oldala</a>
+                        </li>
+                        @endrole
+                        @role(\App\Constants\Roles::ROLE_CONTENT_EDITOR)
+                        <li class="nav-item">
+                            <a class="nav-link" href="/editor-page">Tartalomszerkesztők oldala</a>
+                        </li>
+                        @endrole
+                        @role(\App\Constants\Roles::ROLE_REGULAR_USER)
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user-page">Regisztrált felhasználók oldala</a>
+                        </li>
+                        @endrole
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -58,7 +81,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Kijelentkezés') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

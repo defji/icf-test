@@ -23,6 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // lazy load user roles
+        $user = auth()->user()->load('roles');
+        return view('home', [
+            "user" => $user
+         ]
+        );
     }
 }

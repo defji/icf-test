@@ -40,6 +40,17 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'username';
+    }
+
     /**
      * The user has been authenticated.
      *
@@ -49,7 +60,8 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $user->update(["last_login" => Carbon::now()]);
+        $user->last_login = Carbon::now();
+        $user->save();
     }
 
 

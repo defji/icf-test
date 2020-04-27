@@ -3,20 +3,19 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+        <div class="col-md-12">
+            <h1>Központi oldal</h1>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
 
-                    You are logged in!
-                </div>
-            </div>
+            Felasználó neve: {{ $user->name }}<br>
+            E-mail: {{ $user->email }}<br>
+            Utolsó bejelentkezés: {{ $user->last_login }}<br>
+            Szerepkörök:
+            @foreach($user->roles as $role)
+                {{ $role->name }},
+            @endforeach
+
+
         </div>
     </div>
 </div>

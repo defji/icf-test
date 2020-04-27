@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\Roles;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +15,33 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->to('/home');
 });
+
+
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::group(['middleware' => ['role:' . Roles::ROLE_ADMINISTRATOR]], function() {
+        Route::get('/admin-page', function() {
+            return view('adminPage');
+        });
+    });
+
+    Route::group(['middleware' => ['role:' . Roles::ROLE_CONTENT_EDITOR."|".Roles::ROLE_ADMINISTRATOR]], function() {
+        Route::get('/editor-page', function() {
+            return view('editorPage');
+        });
+    });
+
+    Route::group(['middleware' => ['role:' . Roles::ROLE_REGULAR_USER."|".Roles::ROLE_ADMINISTRATOR]], function() {
+        Route::get('/user-page', function() {
+            return view('userPage');
+        });
+    });
+
+});
+
+
 
 Auth::routes();
 
