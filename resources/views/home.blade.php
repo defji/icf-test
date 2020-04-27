@@ -8,11 +8,10 @@
 
 
             Felasználó neve: {{ $user->name }}<br>
-            E-mail: {{ $user->email }}<br>
             Utolsó bejelentkezés: {{ $user->last_login }}<br>
             Szerepkörök:
             @foreach($user->roles as $role)
-                {{ $role->name }},
+                @lang('roles.role_'.$role->name ),
             @endforeach
 
 
