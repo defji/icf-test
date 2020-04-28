@@ -7,7 +7,10 @@ use App\Providers\RouteServiceProvider;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
@@ -61,18 +64,15 @@ class LoginController extends Controller
      * @param  Request  $request
      * @return void
      *
-     * @throws ValidationException
      */
     protected function validateLogin(Request $request)
     {
-
-            $request->validate([
-                $this->username() => 'required|string',
-                'password' => 'required|string',
-                'captcha' => $request->captcha ? 'captcha|required|min:4|max:4' : ''
-            ]);
+        $request->validate([
+            $this->username() => 'required|string',
+            'password'        => 'required|string',
+            'captcha'         => $request->has('captcha') ? 'nullable|captcha|required|min:4|max:4' : ''
+        ]);
     }
-
 
 
     /**
@@ -94,7 +94,7 @@ class LoginController extends Controller
      * Handle a login request to the application.
      *
      * @param  Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @return RedirectResponse|Response|JsonResponse
      *
      * @throws ValidationException
      */
@@ -120,11 +120,11 @@ class LoginController extends Controller
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
         //$this->incrementLoginAttempts($request);
-        $user= User::where('username',$request->username)->first();
+        $user = User::where('username', $request->username)->first();
         $user->login_attempt++;
         $user->save();
-        if($user->login_attempt > 3) {
-            $request->session()->flash('captcha',true);
+        if ($user->login_attempt > 2) {
+            $request->session()->flash('captcha', true);
         }
 
         return $this->sendFailedLoginResponse($request);
